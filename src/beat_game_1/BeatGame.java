@@ -7,6 +7,7 @@ import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -29,8 +30,6 @@ public class BeatGame extends JFrame {
 	private ImageIcon rightButtonBasicImage = new ImageIcon(Main.class.getResource("../images/rightButtonBasic.png"));
 	private ImageIcon rightButtonEnteredImage = new ImageIcon(Main.class.getResource("../images/rightButtonEntered.png"));
 	
-	private Image selectedImage = new ImageIcon(Main.class.getResource("../images/Angel With A Shotgun Start Image.jpg")).getImage();
-	private Image titleImage = new ImageIcon(Main.class.getResource("../images/Angel With A Shotgun Title Image.png")).getImage();
 	private Image background = new ImageIcon(Main.class.getResource("../images/Title.jpg")).getImage();
 	
 	private JLabel menuBar = new JLabel(new ImageIcon(Main.class.getResource("../images/menuBar.png")));
@@ -41,6 +40,13 @@ public class BeatGame extends JFrame {
 	private JButton leftButton = new JButton(leftButtonBasicImage);
 	private JButton rightButton = new JButton(rightButtonBasicImage);
 	
+	ArrayList<Track> trackList = new ArrayList<Track>(); // ArrayList는 이미 만들어져 제공되는 리스트배열
+
+	private Image titleImage;
+	private Image selectedImage;
+	private Music selectedMusic;
+	
+	private int nowSelected = 0;
 	
 	private int mouseX, mouseY;
 	
@@ -56,6 +62,16 @@ public class BeatGame extends JFrame {
 		setBackground(new Color(0, 0, 0, 0));
 		setLayout(null);
 
+		Music titleMusic = new Music("Intro.mp3", true); // 배경화면에 Intro.mp3 객체 추가
+		titleMusic.start(); // 배경음악 실행
+		
+		trackList.add(new Track("Angel With A Shotgun Title Image.png", "Angel With A Shotgun Start Image.jpg",
+				"Angel With A Shotgun Game Image.jpg", "Angel With A Shotgun Selected.mp3",
+				"The Cab - Angel With A Shotgun.mp3"));
+		trackList.add(new Track("Lilly Title Image.png", "Lilly Start Image.jpg",
+				"Lilly Game Image.jpg", "Lily Selected.mp3",
+				"Alan Walker & K-391 & Emelie Hollow -Lily.mp3"));
+		
 		startButton.setBounds(40, 200, 293, 93); // x, y, width, height
 		startButton.setBorderPainted(false); // 가까이가면 테두리 생겨서 변하는 모습 제거
 		startButton.setContentAreaFilled(false);
@@ -76,6 +92,8 @@ public class BeatGame extends JFrame {
 			public void mousePressed(MouseEvent e) { // 마우스를 누르면
 				Music ButtonPressedMusic = new Music("exitButtonEffect.mp3", false);
 				ButtonPressedMusic.start();
+				titleMusic.close();
+				selectedTrack(0);
 				startButton.setVisible(false); // 게임 시작 화면 전환 이벤트로서 각 버튼을 숨기고 배경화면을 전환한다.
 				quitButton.setVisible(false);
 				leftButton.setVisible(true);
@@ -167,7 +185,7 @@ public class BeatGame extends JFrame {
 			public void mousePressed(MouseEvent e) { // 마우스를 누르면
 				Music ButtonPressedMusic = new Music("exitButtonEffect.mp3", false);
 				ButtonPressedMusic.start();
-				// 왼쪽 버튼 이벤트
+				selectLeft();
 			}
 		});
 		add(leftButton);
@@ -193,7 +211,7 @@ public class BeatGame extends JFrame {
 			public void mousePressed(MouseEvent e) { // 마우스를 누르면
 				Music ButtonPressedMusic = new Music("exitButtonEffect.mp3", false);
 				ButtonPressedMusic.start();
-				// 오른쪽 버튼 이벤트
+				selectRight();
 			}
 		});
 		add(rightButton);
@@ -218,8 +236,6 @@ public class BeatGame extends JFrame {
 		add(menuBar);
 
 
-		Music titleMusic = new Music("Intro.mp3", true); // 배경화면에 Intro.mp3 객체 추가
-		titleMusic.start(); // 배경음악 실행
 	}
 
 	public void paint(Graphics g) {
@@ -237,5 +253,30 @@ public class BeatGame extends JFrame {
 		}
 		paintComponents(g); // JLabel,JButton 등을 JFrame 안에 그려주는 역할
 		this.repaint();
+	}
+	
+	public void selectedTrack(int nowSelected) {
+		if(selectedMusic != null)
+			selectedMusic.close();
+		titleImage = new ImageIcon(Main.class.getResource("../images/" + trackList.get(nowSelected).getTitleImage())).getImage();
+		selectedImage = new ImageIcon(Main.class.getResource("../images/" + trackList.get(nowSelected).getStartImage())).getImage();
+		selectedMusic = new Music(trackList.get(nowSelected).getStartMusic(), true);
+		selectedMusic.start();
+	}
+	
+	public void selectLeft() { // 좌측 버튼 이벤트
+		if(nowSelected == 0)
+			nowSelected = trackList.size() - 1;
+		else
+			nowSelected--;
+		selectedTrack(nowSelected);
+	}
+	
+	public void selectRight() { // 우측 버튼 이벤트
+		if(nowSelected == trackList.size() - 1)
+			nowSelected = 0;
+		else
+			nowSelected++;
+		selectedTrack(nowSelected);
 	}
 }
