@@ -29,6 +29,10 @@ public class BeatGame extends JFrame {
 	private ImageIcon leftButtonEnteredImage = new ImageIcon(Main.class.getResource("../images/leftButtonEntered.png"));
 	private ImageIcon rightButtonBasicImage = new ImageIcon(Main.class.getResource("../images/rightButtonBasic.png"));
 	private ImageIcon rightButtonEnteredImage = new ImageIcon(Main.class.getResource("../images/rightButtonEntered.png"));
+	private ImageIcon easyButtonBasicImage = new ImageIcon(Main.class.getResource("../images/easyButtonBasic.png"));
+	private ImageIcon easyButtonEnteredImage = new ImageIcon(Main.class.getResource("../images/easyButtonEntered.png"));
+	private ImageIcon hardButtonBasicImage = new ImageIcon(Main.class.getResource("../images/hardButtonBasic.png"));
+	private ImageIcon hardButtonEnteredImage = new ImageIcon(Main.class.getResource("../images/hardButtonEntered.png"));
 	
 	private Image background = new ImageIcon(Main.class.getResource("../images/Title.jpg")).getImage();
 	
@@ -39,6 +43,8 @@ public class BeatGame extends JFrame {
 	private JButton startButton = new JButton(startButtonBasicImage);
 	private JButton leftButton = new JButton(leftButtonBasicImage);
 	private JButton rightButton = new JButton(rightButtonBasicImage);
+	private JButton easyButton = new JButton(easyButtonBasicImage);
+	private JButton hardButton = new JButton(hardButtonBasicImage);
 	
 	ArrayList<Track> trackList = new ArrayList<Track>(); // ArrayList는 이미 만들어져 제공되는 리스트배열
 
@@ -98,6 +104,8 @@ public class BeatGame extends JFrame {
 				quitButton.setVisible(false);
 				leftButton.setVisible(true);
 				rightButton.setVisible(true);
+				easyButton.setVisible(true);
+				hardButton.setVisible(true);
 				background = new ImageIcon(Main.class.getResource("../images/mainBackground.jpg")).getImage();
 				isMainScreen = true;
 			}
@@ -235,7 +243,57 @@ public class BeatGame extends JFrame {
 		});
 		add(menuBar);
 
-
+		easyButton.setVisible(false);
+		easyButton.setBounds(440, 580, 100, 100); // x, y, width, height
+		easyButton.setBorderPainted(false); // 가까이가면 테두리 생겨서 변하는 모습 제거
+		easyButton.setContentAreaFilled(false);
+		easyButton.addMouseListener(new MouseAdapter() { // 마우스를 읽어들이기
+			@Override
+			public void mouseEntered(MouseEvent e) { // 마우스가 버튼에 들어오면
+				easyButton.setIcon(easyButtonEnteredImage);
+				easyButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // 마우스가 버튼 안에서는 손가락 모양의 커서
+				Music ButtonEnteredMusic = new Music("easyButtonEffect.mp3", false);
+				ButtonEnteredMusic.start();
+			}
+			@Override
+			public void mouseExited(MouseEvent e) { // 마우스가 버튼을 벗어나면
+				easyButton.setIcon(easyButtonBasicImage);
+				easyButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR)); // 다시 버튼을 벗어나면 기본값 커서로 변경
+			}
+			@Override
+			public void mousePressed(MouseEvent e) { // 마우스를 누르면
+				Music ButtonPressedMusic = new Music("exitButtonEffect.mp3", false);
+				ButtonPressedMusic.start();
+				gameStart(nowSelected, "easy");
+			}
+		});
+		add(easyButton);
+		
+		hardButton.setVisible(false);
+		hardButton.setBounds(740, 580, 100, 100); // x, y, width, height
+		hardButton.setBorderPainted(false); // 가까이가면 테두리 생겨서 변하는 모습 제거
+		hardButton.setContentAreaFilled(false);
+		hardButton.addMouseListener(new MouseAdapter() { // 마우스를 읽어들이기
+			@Override
+			public void mouseEntered(MouseEvent e) { // 마우스가 버튼에 들어오면
+				hardButton.setIcon(hardButtonEnteredImage);
+				hardButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // 마우스가 버튼 안에서는 손가락 모양의 커서
+				Music ButtonEnteredMusic = new Music("hardButtonEffect.mp3", false);
+				ButtonEnteredMusic.start();
+			}
+			@Override
+			public void mouseExited(MouseEvent e) { // 마우스가 버튼을 벗어나면
+				hardButton.setIcon(hardButtonBasicImage);
+				hardButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR)); // 다시 버튼을 벗어나면 기본값 커서로 변경
+			}
+			@Override
+			public void mousePressed(MouseEvent e) { // 마우스를 누르면
+				Music ButtonPressedMusic = new Music("exitButtonEffect.mp3", false);
+				ButtonPressedMusic.start();
+				gameStart(nowSelected, "hard");
+			}
+		});
+		add(hardButton);
 	}
 
 	public void paint(Graphics g) {
@@ -248,8 +306,8 @@ public class BeatGame extends JFrame {
 	public void screenDraw(Graphics g) {
 		g.drawImage(background, 0, 0, null);
 		if(isMainScreen) {
-			g.drawImage(selectedImage,240,120,null); // x240, y120 위치에 selectedImage 삽입
-			g.drawImage(titleImage, 290, 120, null);
+			g.drawImage(selectedImage,240, 80, null); // x240, y120 위치에 selectedImage 삽입
+			g.drawImage(titleImage, 290, 80, null);
 		}
 		paintComponents(g); // JLabel,JButton 등을 JFrame 안에 그려주는 역할
 		this.repaint();
@@ -278,5 +336,17 @@ public class BeatGame extends JFrame {
 		else
 			nowSelected++;
 		selectedTrack(nowSelected);
+	}
+	
+	public void gameStart(int newSelected, String difficulty) {
+		if(selectedMusic != null)
+			selectedMusic.close();
+		isMainScreen = false;
+		leftButton.setVisible(false);
+		rightButton.setVisible(false);
+		easyButton.setVisible(false);
+		hardButton.setVisible(false);
+		background = new ImageIcon(Main.class.getResource("../images/" + trackList.get(nowSelected).getGameImage())).getImage();
+		
 	}
 }
