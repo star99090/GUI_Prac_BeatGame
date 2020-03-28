@@ -20,10 +20,10 @@ public class BeatGame extends JFrame {
 	private Graphics screenGraphic;
 	
 	private ImageIcon exitButtonBasicImage = new ImageIcon(Main.class.getResource("../images/exitButtonBasic.png"));
-	private ImageIcon quitButtonBasicImage = new ImageIcon(Main.class.getResource("../images/quitButtonBasic.png"));
-	private ImageIcon startButtonBasicImage = new ImageIcon(Main.class.getResource("../images/startButtonBasic.png"));
-	private ImageIcon quitButtonEnteredImage = new ImageIcon(Main.class.getResource("../images/quitButtonEntered.png"));
 	private ImageIcon exitButtonEnteredImage = new ImageIcon(Main.class.getResource("../images/exitButtonEntered.png"));
+	private ImageIcon quitButtonBasicImage = new ImageIcon(Main.class.getResource("../images/quitButtonBasic.png"));
+	private ImageIcon quitButtonEnteredImage = new ImageIcon(Main.class.getResource("../images/quitButtonEntered.png"));
+	private ImageIcon startButtonBasicImage = new ImageIcon(Main.class.getResource("../images/startButtonBasic.png"));
 	private ImageIcon startButtonEnteredImage = new ImageIcon(Main.class.getResource("../images/startButtonEntered.png"));
 	private ImageIcon leftButtonBasicImage = new ImageIcon(Main.class.getResource("../images/leftButtonBasic.png"));
 	private ImageIcon leftButtonEnteredImage = new ImageIcon(Main.class.getResource("../images/leftButtonEntered.png"));
@@ -78,7 +78,7 @@ public class BeatGame extends JFrame {
 				"Lilly Game Image.jpg", "Lily Selected.mp3",
 				"Alan Walker & K-391 & Emelie Hollow -Lily.mp3"));
 		
-		startButton.setBounds(40, 200, 293, 93); // x, y, width, height
+		startButton.setBounds(287, 540, 293, 93); // x, y, width, height
 		startButton.setBorderPainted(false); // 가까이가면 테두리 생겨서 변하는 모습 제거
 		startButton.setContentAreaFilled(false);
 		startButton.addMouseListener(new MouseAdapter() { // 마우스를 읽어들이기
@@ -112,7 +112,7 @@ public class BeatGame extends JFrame {
 		});
 		add(startButton);
 
-		exitButton.setBounds(1245, 5, 30, 30);
+		exitButton.setBounds(1245, 4, 30, 30);
 		exitButton.setBorderPainted(false); // 가까이가면 테두리 생겨서 변하는 모습 제거
 		exitButton.setContentAreaFilled(false);
 		exitButton.addMouseListener(new MouseAdapter() { // 마우스를 읽어들이기
@@ -129,9 +129,9 @@ public class BeatGame extends JFrame {
 				exitButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR)); // 다시 버튼을 벗어나면 기본값 커서로 변경
 			}
 			@Override
-			public void mousePressed(MouseEvent e) {
-				Music ButtonPressedMusic = new Music("exitButtonEffect.mp3", false);
-				ButtonPressedMusic.start();
+			public void mousePressed(MouseEvent e) { // 종료시에는 소리 안내고 싶었음
+				//Music ButtonPressedMusic = new Music("exitButtonEffect.mp3", false);
+				//ButtonPressedMusic.start();
 				try {
 					Thread.sleep(200); // 0.2초 딜레이
 				} catch (InterruptedException ex) {
@@ -142,7 +142,7 @@ public class BeatGame extends JFrame {
 		});
 		add(exitButton);
 		
-		quitButton.setBounds(40, 330, 293, 93);
+		quitButton.setBounds(700, 540, 293, 93);
 		quitButton.setBorderPainted(false); // 가까이가면 테두리 생겨서 변하는 모습 제거
 		quitButton.setContentAreaFilled(false);
 		quitButton.addMouseListener(new MouseAdapter() { // 마우스를 읽어들이기
@@ -244,7 +244,7 @@ public class BeatGame extends JFrame {
 		add(menuBar);
 
 		easyButton.setVisible(false);
-		easyButton.setBounds(440, 580, 100, 100); // x, y, width, height
+		easyButton.setBounds(390, 580, 200, 100); // x, y, width, height
 		easyButton.setBorderPainted(false); // 가까이가면 테두리 생겨서 변하는 모습 제거
 		easyButton.setContentAreaFilled(false);
 		easyButton.addMouseListener(new MouseAdapter() { // 마우스를 읽어들이기
@@ -270,7 +270,7 @@ public class BeatGame extends JFrame {
 		add(easyButton);
 		
 		hardButton.setVisible(false);
-		hardButton.setBounds(740, 580, 100, 100); // x, y, width, height
+		hardButton.setBounds(690, 580, 200, 100); // x, y, width, height
 		hardButton.setBorderPainted(false); // 가까이가면 테두리 생겨서 변하는 모습 제거
 		hardButton.setContentAreaFilled(false);
 		hardButton.addMouseListener(new MouseAdapter() { // 마우스를 읽어들이기
