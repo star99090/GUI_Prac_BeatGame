@@ -15,10 +15,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 public class BeatGame extends JFrame {
-
-	private Image screenImage;
-	private Graphics screenGraphic;
-	
 	private ImageIcon exitButtonBasicImage = new ImageIcon(Main.class.getResource("../images/exitButtonBasic.png"));
 	private ImageIcon exitButtonEnteredImage = new ImageIcon(Main.class.getResource("../images/exitButtonEntered.png"));
 	private ImageIcon quitButtonBasicImage = new ImageIcon(Main.class.getResource("../images/quitButtonBasic.png"));
@@ -33,11 +29,9 @@ public class BeatGame extends JFrame {
 	private ImageIcon easyButtonEnteredImage = new ImageIcon(Main.class.getResource("../images/easyButtonEntered.png"));
 	private ImageIcon hardButtonBasicImage = new ImageIcon(Main.class.getResource("../images/hardButtonBasic.png"));
 	private ImageIcon hardButtonEnteredImage = new ImageIcon(Main.class.getResource("../images/hardButtonEntered.png"));
-	
-	private Image background = new ImageIcon(Main.class.getResource("../images/Title.jpg")).getImage();
-	
-	private JLabel menuBar = new JLabel(new ImageIcon(Main.class.getResource("../images/menuBar.png")));
-	
+	private ImageIcon backButtonBasicImage = new ImageIcon(Main.class.getResource("../images/backButtonBasic.png"));
+	private ImageIcon backButtonEnteredImage = new ImageIcon(Main.class.getResource("../images/backButtonEntered.png"));
+
 	private JButton exitButton = new JButton(exitButtonBasicImage);
 	private JButton quitButton = new JButton(quitButtonBasicImage);
 	private JButton startButton = new JButton(startButtonBasicImage);
@@ -45,18 +39,27 @@ public class BeatGame extends JFrame {
 	private JButton rightButton = new JButton(rightButtonBasicImage);
 	private JButton easyButton = new JButton(easyButtonBasicImage);
 	private JButton hardButton = new JButton(hardButtonBasicImage);
+	private JButton backButton = new JButton(backButtonBasicImage);
 	
-	ArrayList<Track> trackList = new ArrayList<Track>(); // ArrayList는 이미 만들어져 제공되는 리스트배열
-
+	private Image background = new ImageIcon(Main.class.getResource("../images/Title.jpg")).getImage();
 	private Image titleImage;
 	private Image selectedImage;
+	private Image screenImage;
+	
+	private Music titleMusic = new Music("Intro.mp3", true); // 배경화면에 Intro.mp3 객체 추가
 	private Music selectedMusic;
 	
 	private int nowSelected = 0;
-	
 	private int mouseX, mouseY;
 	
+	ArrayList<Track> trackList = new ArrayList<Track>(); // ArrayList는 이미 만들어져 제공되는 리스트배열
+	
+	private Graphics screenGraphic;
+	
 	private boolean isMainScreen = false; // Main 화면으로 이동하면 true값을 갖게 할 예정
+	
+	private JLabel menuBar = new JLabel(new ImageIcon(Main.class.getResource("../images/menuBar.png")));
+	
 	public BeatGame() { // 생성자
 		setUndecorated(true);
 		setTitle("BeatGame");
@@ -67,16 +70,16 @@ public class BeatGame extends JFrame {
 		setVisible(true);
 		setBackground(new Color(0, 0, 0, 0));
 		setLayout(null);
-
-		Music titleMusic = new Music("Intro.mp3", true); // 배경화면에 Intro.mp3 객체 추가
 		titleMusic.start(); // 배경음악 실행
-		
+
 		trackList.add(new Track("Angel With A Shotgun Title Image.png", "Angel With A Shotgun Start Image.jpg",
 				"Angel With A Shotgun Game Image.jpg", "Angel With A Shotgun Selected.mp3",
 				"The Cab - Angel With A Shotgun.mp3"));
 		trackList.add(new Track("Lilly Title Image.png", "Lilly Start Image.jpg",
 				"Lilly Game Image.jpg", "Lily Selected.mp3",
 				"Alan Walker & K-391 & Emelie Hollow -Lily.mp3"));
+		
+		
 		
 		startButton.setBounds(287, 540, 293, 93); // x, y, width, height
 		startButton.setBorderPainted(false); // 가까이가면 테두리 생겨서 변하는 모습 제거
@@ -86,7 +89,7 @@ public class BeatGame extends JFrame {
 			public void mouseEntered(MouseEvent e) { // 마우스가 버튼에 들어오면
 				startButton.setIcon(startButtonEnteredImage);
 				startButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // 마우스가 버튼 안에서는 손가락 모양의 커서
-				Music ButtonEnteredMusic = new Music("exitButtonEffect.mp3", false);
+				Music ButtonEnteredMusic = new Music("ButtonEffect.mp3", false);
 				ButtonEnteredMusic.start();
 			}
 			@Override
@@ -96,18 +99,9 @@ public class BeatGame extends JFrame {
 			}
 			@Override
 			public void mousePressed(MouseEvent e) { // 마우스를 누르면
-				Music ButtonPressedMusic = new Music("exitButtonEffect.mp3", false);
+				Music ButtonPressedMusic = new Music("ButtonPressedEffect.mp3", false);
 				ButtonPressedMusic.start();
-				titleMusic.close();
-				selectedTrack(0);
-				startButton.setVisible(false); // 게임 시작 화면 전환 이벤트로서 각 버튼을 숨기고 배경화면을 전환한다.
-				quitButton.setVisible(false);
-				leftButton.setVisible(true);
-				rightButton.setVisible(true);
-				easyButton.setVisible(true);
-				hardButton.setVisible(true);
-				background = new ImageIcon(Main.class.getResource("../images/mainBackground.jpg")).getImage();
-				isMainScreen = true;
+				enterMain();
 			}
 		});
 		add(startButton);
@@ -120,7 +114,7 @@ public class BeatGame extends JFrame {
 			public void mouseEntered(MouseEvent e) { // 마우스가 버튼에 들어오면
 				exitButton.setIcon(exitButtonEnteredImage);
 				exitButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // 마우스가 버튼 안에서는 손가락 모양의 커서
-				Music ButtonEnteredMusic = new Music("exitButtonEffect.mp3", false);
+				Music ButtonEnteredMusic = new Music("ButtonEffect.mp3", false);
 				ButtonEnteredMusic.start();
 			}
 			@Override
@@ -129,9 +123,9 @@ public class BeatGame extends JFrame {
 				exitButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR)); // 다시 버튼을 벗어나면 기본값 커서로 변경
 			}
 			@Override
-			public void mousePressed(MouseEvent e) { // 종료시에는 소리 안내고 싶었음
-				//Music ButtonPressedMusic = new Music("exitButtonEffect.mp3", false);
-				//ButtonPressedMusic.start();
+			public void mousePressed(MouseEvent e) {
+				Music ButtonPressedMusic = new Music("ButtonPressedEffect.mp3", false);
+				ButtonPressedMusic.start();
 				try {
 					Thread.sleep(200); // 0.2초 딜레이
 				} catch (InterruptedException ex) {
@@ -142,6 +136,25 @@ public class BeatGame extends JFrame {
 		});
 		add(exitButton);
 		
+		menuBar.setBounds(0, 0, 1280, 30);
+		menuBar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				mouseX = e.getX(); //클릭 된 곳의 X 좌표
+				mouseY = e.getY();
+			}
+			
+		});
+		menuBar.addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				int x = e.getXOnScreen(); // 화면 위의 순간순간 x 좌표
+				int y = e.getYOnScreen();
+				setLocation(x-mouseX, y-mouseY);
+			}
+		});
+		add(menuBar);
+		
 		quitButton.setBounds(700, 540, 293, 93);
 		quitButton.setBorderPainted(false); // 가까이가면 테두리 생겨서 변하는 모습 제거
 		quitButton.setContentAreaFilled(false);
@@ -150,7 +163,7 @@ public class BeatGame extends JFrame {
 			public void mouseEntered(MouseEvent e) { // 마우스가 버튼에 들어오면
 				quitButton.setIcon(quitButtonEnteredImage);
 				quitButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // 마우스가 버튼 안에서는 손가락 모양의 커서
-				Music ButtonEnteredMusic = new Music("exitButtonEffect.mp3", false);
+				Music ButtonEnteredMusic = new Music("ButtonEffect.mp3", false);
 				ButtonEnteredMusic.start();
 			}
 			@Override
@@ -160,7 +173,7 @@ public class BeatGame extends JFrame {
 			}
 			@Override
 			public void mousePressed(MouseEvent e) {
-				Music ButtonPressedMusic = new Music("exitButtonEffect.mp3", false); // isLoop값에 false가 전달되므로 한 번만 실행
+				Music ButtonPressedMusic = new Music("ButtonPressedEffect.mp3", false); // isLoop값에 false가 전달되므로 한 번만 실행
 				ButtonPressedMusic.start();
 				try {
 					Thread.sleep(200);
@@ -181,7 +194,7 @@ public class BeatGame extends JFrame {
 			public void mouseEntered(MouseEvent e) { // 마우스가 버튼에 들어오면
 				leftButton.setIcon(leftButtonEnteredImage);
 				leftButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // 마우스가 버튼 안에서는 손가락 모양의 커서
-				Music ButtonEnteredMusic = new Music("exitButtonEffect.mp3", false);
+				Music ButtonEnteredMusic = new Music("ButtonEffect.mp3", false);
 				ButtonEnteredMusic.start();
 			}
 			@Override
@@ -191,7 +204,7 @@ public class BeatGame extends JFrame {
 			}
 			@Override
 			public void mousePressed(MouseEvent e) { // 마우스를 누르면
-				Music ButtonPressedMusic = new Music("exitButtonEffect.mp3", false);
+				Music ButtonPressedMusic = new Music("ButtonPressedEffect.mp3", false);
 				ButtonPressedMusic.start();
 				selectLeft();
 			}
@@ -207,7 +220,7 @@ public class BeatGame extends JFrame {
 			public void mouseEntered(MouseEvent e) { // 마우스가 버튼에 들어오면
 				rightButton.setIcon(rightButtonEnteredImage);
 				rightButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // 마우스가 버튼 안에서는 손가락 모양의 커서
-				Music ButtonEnteredMusic = new Music("exitButtonEffect.mp3", false);
+				Music ButtonEnteredMusic = new Music("ButtonEffect.mp3", false);
 				ButtonEnteredMusic.start();
 			}
 			@Override
@@ -217,34 +230,15 @@ public class BeatGame extends JFrame {
 			}
 			@Override
 			public void mousePressed(MouseEvent e) { // 마우스를 누르면
-				Music ButtonPressedMusic = new Music("exitButtonEffect.mp3", false);
+				Music ButtonPressedMusic = new Music("ButtonPressedEffect.mp3", false);
 				ButtonPressedMusic.start();
 				selectRight();
 			}
 		});
 		add(rightButton);
-		
-		menuBar.setBounds(0, 0, 1280, 30);
-		menuBar.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				mouseX = e.getX(); //클릭 된 곳의 X 좌표
-				mouseY = e.getY();
-			}
-			
-		});
-		menuBar.addMouseMotionListener(new MouseMotionAdapter() {
-			@Override
-			public void mouseDragged(MouseEvent e) {
-				int x = e.getXOnScreen(); // 화면 위의 순간순간 x 좌표
-				int y = e.getYOnScreen();
-				setLocation(x-mouseX, y-mouseY);
-			}
-		});
-		add(menuBar);
 
 		easyButton.setVisible(false);
-		easyButton.setBounds(390, 580, 200, 100); // x, y, width, height
+		easyButton.setBounds(190, 580, 200, 100); // x, y, width, height
 		easyButton.setBorderPainted(false); // 가까이가면 테두리 생겨서 변하는 모습 제거
 		easyButton.setContentAreaFilled(false);
 		easyButton.addMouseListener(new MouseAdapter() { // 마우스를 읽어들이기
@@ -252,7 +246,7 @@ public class BeatGame extends JFrame {
 			public void mouseEntered(MouseEvent e) { // 마우스가 버튼에 들어오면
 				easyButton.setIcon(easyButtonEnteredImage);
 				easyButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // 마우스가 버튼 안에서는 손가락 모양의 커서
-				Music ButtonEnteredMusic = new Music("easyButtonEffect.mp3", false);
+				Music ButtonEnteredMusic = new Music("ButtonEffect.mp3", false);
 				ButtonEnteredMusic.start();
 			}
 			@Override
@@ -262,7 +256,7 @@ public class BeatGame extends JFrame {
 			}
 			@Override
 			public void mousePressed(MouseEvent e) { // 마우스를 누르면
-				Music ButtonPressedMusic = new Music("exitButtonEffect.mp3", false);
+				Music ButtonPressedMusic = new Music("ButtonPressedEffect.mp3", false);
 				ButtonPressedMusic.start();
 				gameStart(nowSelected, "easy");
 			}
@@ -270,7 +264,7 @@ public class BeatGame extends JFrame {
 		add(easyButton);
 		
 		hardButton.setVisible(false);
-		hardButton.setBounds(690, 580, 200, 100); // x, y, width, height
+		hardButton.setBounds(880, 580, 200, 100); // x, y, width, height
 		hardButton.setBorderPainted(false); // 가까이가면 테두리 생겨서 변하는 모습 제거
 		hardButton.setContentAreaFilled(false);
 		hardButton.addMouseListener(new MouseAdapter() { // 마우스를 읽어들이기
@@ -278,7 +272,7 @@ public class BeatGame extends JFrame {
 			public void mouseEntered(MouseEvent e) { // 마우스가 버튼에 들어오면
 				hardButton.setIcon(hardButtonEnteredImage);
 				hardButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // 마우스가 버튼 안에서는 손가락 모양의 커서
-				Music ButtonEnteredMusic = new Music("hardButtonEffect.mp3", false);
+				Music ButtonEnteredMusic = new Music("ButtonEffect.mp3", false);
 				ButtonEnteredMusic.start();
 			}
 			@Override
@@ -288,12 +282,38 @@ public class BeatGame extends JFrame {
 			}
 			@Override
 			public void mousePressed(MouseEvent e) { // 마우스를 누르면
-				Music ButtonPressedMusic = new Music("exitButtonEffect.mp3", false);
+				Music ButtonPressedMusic = new Music("ButtonPressedEffect.mp3", false);
 				ButtonPressedMusic.start();
 				gameStart(nowSelected, "hard");
 			}
 		});
 		add(hardButton);
+		
+		backButton.setVisible(false);
+		backButton.setBounds(20, 630, 70, 70); // x, y, width, height
+		backButton.setBorderPainted(false); // 가까이가면 테두리 생겨서 변하는 모습 제거
+		backButton.setContentAreaFilled(false);
+		backButton.addMouseListener(new MouseAdapter() { // 마우스를 읽어들이기
+			@Override
+			public void mouseEntered(MouseEvent e) { // 마우스가 버튼에 들어오면
+				backButton.setIcon(backButtonEnteredImage);
+				backButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // 마우스가 버튼 안에서는 손가락 모양의 커서
+				Music ButtonEnteredMusic = new Music("ButtonEffect.mp3", false);
+				ButtonEnteredMusic.start();
+			}
+			@Override
+			public void mouseExited(MouseEvent e) { // 마우스가 버튼을 벗어나면
+				backButton.setIcon(backButtonBasicImage);
+				backButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR)); // 다시 버튼을 벗어나면 기본값 커서로 변경
+			}
+			@Override
+			public void mousePressed(MouseEvent e) { // 마우스를 누르면
+				Music ButtonPressedMusic = new Music("ButtonPressedEffect.mp3", false);
+				ButtonPressedMusic.start();
+				backMain();
+			}
+		});
+		add(backButton);
 	}
 
 	public void paint(Graphics g) {
@@ -346,7 +366,31 @@ public class BeatGame extends JFrame {
 		rightButton.setVisible(false);
 		easyButton.setVisible(false);
 		hardButton.setVisible(false);
+		backButton.setVisible(true);
 		background = new ImageIcon(Main.class.getResource("../images/" + trackList.get(nowSelected).getGameImage())).getImage();
-		
+	}
+	
+	public void backMain() {
+		isMainScreen = true;
+		leftButton.setVisible(true);
+		rightButton.setVisible(true);
+		easyButton.setVisible(true);
+		hardButton.setVisible(true);
+		backButton.setVisible(false);
+		background = new ImageIcon(Main.class.getResource("../images/mainBackground.jpg")).getImage();
+		selectedTrack(nowSelected);
+	}
+	
+	public void enterMain() {
+		startButton.setVisible(false); // 게임 시작 화면 전환 이벤트로서 각 버튼을 숨기고 배경화면을 전환한다.
+		quitButton.setVisible(false);
+		background = new ImageIcon(Main.class.getResource("../images/mainBackground.jpg")).getImage();
+		isMainScreen = true;
+		leftButton.setVisible(true);
+		rightButton.setVisible(true);
+		easyButton.setVisible(true);
+		hardButton.setVisible(true);
+		selectedTrack(0);
+		titleMusic.close();
 	}
 }
