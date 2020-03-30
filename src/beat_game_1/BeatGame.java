@@ -2,11 +2,9 @@ package beat_game_1;
 
 import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -45,11 +43,6 @@ public class BeatGame extends JFrame {
 	private JButton backButton = new JButton(backButtonBasicImage);
 	
 	private Image background = new ImageIcon(Main.class.getResource("../images/Title.jpg")).getImage();
-	private Image gameInfoImage = new ImageIcon(Main.class.getResource("../images/gameInfo.png")).getImage();
-	private Image judgementLineImage = new ImageIcon(Main.class.getResource("../images/judgementLine.png")).getImage();
-	private Image noteRouteImage = new ImageIcon(Main.class.getResource("../images/noteRoute.png")).getImage();
-	private Image noteRouteLineImage = new ImageIcon(Main.class.getResource("../images/noteRouteLine.png")).getImage();
-	private Image noteBasicImage = new ImageIcon(Main.class.getResource("../images/noteBasic.png")).getImage();
 	private Image titleImage;
 	private Image selectedImage;
 	private Image screenImage;
@@ -69,6 +62,8 @@ public class BeatGame extends JFrame {
 	
 	private JLabel menuBar = new JLabel(new ImageIcon(Main.class.getResource("../images/menuBar.png")));
 	
+	public static Game game = new Game();
+
 	public BeatGame() { // 생성자
 		setUndecorated(true);
 		setTitle("BeatGame");
@@ -80,6 +75,8 @@ public class BeatGame extends JFrame {
 		setBackground(new Color(0, 0, 0, 0));
 		setLayout(null);
 		titleMusic.start(); // 배경음악 실행
+		
+		addKeyListener(new KeyListener());
 
 		trackList.add(new Track("Angel With A Shotgun Title Image.png", "Angel With A Shotgun Start Image.jpg",
 				"Angel With A Shotgun Game Image.jpg", "Angel With A Shotgun Selected.mp3",
@@ -339,49 +336,7 @@ public class BeatGame extends JFrame {
 			g.drawImage(titleImage, 290, 80, null);
 		}
 		if(isGameScreen) {
-			g.drawImage(noteRouteImage, 228, 30, null);
-			g.drawImage(noteRouteImage, 332, 30, null);
-			g.drawImage(noteRouteImage, 436, 30, null);
-			g.drawImage(noteRouteImage, 540, 30, null);
-			g.drawImage(noteRouteImage, 640, 30, null);
-			g.drawImage(noteRouteImage, 744, 30, null);
-			g.drawImage(noteRouteImage, 848, 30, null);
-			g.drawImage(noteRouteImage, 952, 30, null);
-			g.drawImage(noteRouteLineImage, 224, 30, null);
-			g.drawImage(noteRouteLineImage, 328, 30, null);
-			g.drawImage(noteRouteLineImage, 432, 30, null);
-			g.drawImage(noteRouteLineImage, 536, 30, null);
-			g.drawImage(noteRouteLineImage, 740, 30, null);
-			g.drawImage(noteRouteLineImage, 844, 30, null);
-			g.drawImage(noteRouteLineImage, 948, 30, null);
-			g.drawImage(noteRouteLineImage, 1052, 30, null);
-			g.drawImage(gameInfoImage, 0, 660, null);
-			g.drawImage(judgementLineImage, 228, 580, null);
-			g.drawImage(noteBasicImage, 228,  120,  null);
-			g.drawImage(noteBasicImage, 332,  500,  null);
-			g.drawImage(noteBasicImage, 436,  500,  null);
-			g.drawImage(noteBasicImage, 540,  340,  null);
-			g.drawImage(noteBasicImage, 640,  340,  null);
-			g.drawImage(noteBasicImage, 744,  325,  null);
-			g.drawImage(noteBasicImage, 848,  305,  null);
-			g.drawImage(noteBasicImage, 952,  305,  null);
-			g.setColor(Color.white);
-			g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-			g.setFont(new Font("Arial", Font.BOLD, 30));
-			g.drawString("The Cab - Angel With A Shotgun", 20, 702);
-			g.drawString("Easy",  1190,  702);
-			g.setFont(new Font("Arial", Font.PLAIN, 26));
-			g.setColor(Color.DARK_GRAY);
-			g.drawString("S", 270, 609);
-			g.drawString("D", 374, 609);
-			g.drawString("F", 478, 609);
-			g.drawString("Space Bar", 580, 609);
-			g.drawString("J", 784, 609);
-			g.drawString("K", 889, 609);
-			g.drawString("L", 993, 609);
-			g.setColor(Color.LIGHT_GRAY);
-			g.setFont(new Font("Elephant", Font.BOLD, 30));
-			g.drawString("000000", 565, 702);
+			game.screenDraw(g);
 		}
 		paintComponents(g); // JLabel,JButton 등을 JFrame 안에 그려주는 역할
 		this.repaint();
@@ -423,6 +378,7 @@ public class BeatGame extends JFrame {
 		backButton.setVisible(true);
 		background = new ImageIcon(Main.class.getResource("../images/" + trackList.get(nowSelected).getGameImage())).getImage();
 		isGameScreen = true;
+		setFocusable(true); // 키보드 포커스가 맞춰진다
 	}
 	
 	public void backMain() {
