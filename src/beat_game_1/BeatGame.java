@@ -62,7 +62,7 @@ public class BeatGame extends JFrame {
 	
 	private JLabel menuBar = new JLabel(new ImageIcon(Main.class.getResource("../images/menuBar.png")));
 	
-	public static Game game = new Game();
+	public static Game game;
 
 	public BeatGame() { // 생성자
 		setUndecorated(true);
@@ -80,12 +80,10 @@ public class BeatGame extends JFrame {
 
 		trackList.add(new Track("Angel With A Shotgun Title Image.png", "Angel With A Shotgun Start Image.jpg",
 				"Angel With A Shotgun Game Image.jpg", "Angel With A Shotgun Selected.mp3",
-				"The Cab - Angel With A Shotgun.mp3"));
+				"The Cab - Angel With A Shotgun.mp3", "The Cab - Angel With A Shotgun"));
 		trackList.add(new Track("Lilly Title Image.png", "Lilly Start Image.jpg",
-				"Lilly Game Image.jpg", "Lily Selected.mp3",
-				"Alan Walker & K-391 & Emelie Hollow -Lily.mp3"));
-		
-		
+				"Lilly Game Image.jpg", "Lily Selected.mp3", "Alan Walker & K-391 & Emelie Hollow -Lily.mp3",
+				"Alan Walker & K-391 & Emelie Hollow -Lily"));
 		
 		startButton.setBounds(287, 540, 293, 93); // x, y, width, height
 		startButton.setBorderPainted(false); // 가까이가면 테두리 생겨서 변하는 모습 제거
@@ -264,7 +262,7 @@ public class BeatGame extends JFrame {
 			public void mousePressed(MouseEvent e) { // 마우스를 누르면
 				Music ButtonPressedMusic = new Music("ButtonPressedEffect.mp3", false);
 				ButtonPressedMusic.start();
-				gameStart(nowSelected, "easy");
+				gameStart(nowSelected, "Easy");
 			}
 		});
 		add(easyButton);
@@ -290,7 +288,7 @@ public class BeatGame extends JFrame {
 			public void mousePressed(MouseEvent e) { // 마우스를 누르면
 				Music ButtonPressedMusic = new Music("ButtonPressedEffect.mp3", false);
 				ButtonPressedMusic.start();
-				gameStart(nowSelected, "hard");
+				gameStart(nowSelected, "Hard");
 			}
 		});
 		add(hardButton);
@@ -379,6 +377,7 @@ public class BeatGame extends JFrame {
 		background = new ImageIcon(Main.class.getResource("../images/" + trackList.get(nowSelected).getGameImage())).getImage();
 		isGameScreen = true;
 		setFocusable(true); // 키보드 포커스가 맞춰진다
+		game = new Game(trackList.get(nowSelected).getTitleName(), difficulty, trackList.get(nowSelected).getGameMusic());
 	}
 	
 	public void backMain() {
@@ -391,6 +390,7 @@ public class BeatGame extends JFrame {
 		background = new ImageIcon(Main.class.getResource("../images/mainBackground.jpg")).getImage();
 		selectedTrack(nowSelected);
 		isGameScreen = false;
+		game.close();
 	}
 	
 	public void enterMain() {
