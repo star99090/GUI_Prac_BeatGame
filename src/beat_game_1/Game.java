@@ -83,7 +83,7 @@ public class Game extends Thread{
 	
 	public void pressS() {
 		noteRouteSImage = new ImageIcon(Main.class.getResource("../images/noteRoutePressed.png")).getImage();
-		new Music("drumSmall1.mp3", false).start();
+		new Music("drumBig1.mp3", false).start();
 	}
 	public void releaseS() {
 		noteRouteSImage = new ImageIcon(Main.class.getResource("../images/noteRoute.png")).getImage();
@@ -92,7 +92,7 @@ public class Game extends Thread{
 	
 	public void pressD() {
 		noteRouteDImage = new ImageIcon(Main.class.getResource("../images/noteRoutePressed.png")).getImage();
-		new Music("drumSmall1.mp3", false).start();
+		new Music("drumBig2.mp3", false).start();
 	}
 	public void releaseD() {
 		noteRouteDImage = new ImageIcon(Main.class.getResource("../images/noteRoute.png")).getImage();
@@ -101,7 +101,7 @@ public class Game extends Thread{
 	
 	public void pressF() {
 		noteRouteFImage = new ImageIcon(Main.class.getResource("../images/noteRoutePressed.png")).getImage();
-		new Music("drumSmall1.mp3", false).start();
+		new Music("drumBig3.mp3", false).start();
 	}
 	public void releaseF() {
 		noteRouteFImage = new ImageIcon(Main.class.getResource("../images/noteRoute.png")).getImage();
@@ -130,7 +130,7 @@ public class Game extends Thread{
 	
 	public void pressK() {
 		noteRouteKImage = new ImageIcon(Main.class.getResource("../images/noteRoutePressed.png")).getImage();
-		new Music("drumSmall1.mp3", false).start();
+		new Music("drumSmall2.mp3", false).start();
 	}
 	public void releaseK() {
 		noteRouteKImage = new ImageIcon(Main.class.getResource("../images/noteRoute.png")).getImage();
@@ -139,7 +139,7 @@ public class Game extends Thread{
 	
 	public void pressL() {
 		noteRouteLImage = new ImageIcon(Main.class.getResource("../images/noteRoutePressed.png")).getImage();
-		new Music("drumSmall1.mp3", false).start();
+		new Music("drumSmall3.mp3", false).start();
 	}
 	public void releaseL() {
 		noteRouteLImage = new ImageIcon(Main.class.getResource("../images/noteRoute.png")).getImage();
@@ -159,11 +159,110 @@ public class Game extends Thread{
 	public void dropNotes() {
 		Beat[] beats = null;
 		if(titleName.equals("The Cab - Angel With A Shotgun")) {
-			int startTime = 1000 - Main.REACH_TIME * 1000;
-			int gap = 125;
+			int startTime = 580 - Main.REACH_TIME * 500;
+			int gap = 10;
 			beats = new Beat[] {
-					new Beat(startTime + gap * 2, "Space"),
-					//new Beat(startTime + gap * 4, "S"),
+					new Beat(startTime + gap * 265, "K"),
+					new Beat(startTime + gap * 285, "K"),
+					new Beat(startTime + gap * 670, "J"),
+					new Beat(startTime + gap * 1050, "J"),
+					new Beat(startTime + gap * 1070, "K"),
+					new Beat(startTime + gap * 1254, "L"),
+					new Beat(startTime + gap * 1294, "L"),
+					new Beat(startTime + gap * 1334, "L"),
+					new Beat(startTime + gap * 1374, "L"),
+					new Beat(startTime + gap * 1440, "Space"),
+					new Beat(startTime + gap * 1440, "D"),
+					new Beat(startTime + gap * 1490, "J"),
+					new Beat(startTime + gap * 1540, "Space"),
+					new Beat(startTime + gap * 1540, "D"),
+					new Beat(startTime + gap * 1600, "S"),
+					new Beat(startTime + gap * 1620, "J"),
+					new Beat(startTime + gap * 1700, "J"),
+					new Beat(startTime + gap * 1740, "Space"),
+					new Beat(startTime + gap * 1740, "D"),
+					new Beat(startTime + gap * 1840, "J"),
+					new Beat(startTime + gap * 1880, "J"),
+					new Beat(startTime + gap * 1940, "Space"),
+					new Beat(startTime + gap * 1940, "D"),
+					new Beat(startTime + gap * 1980, "S"),
+					new Beat(startTime + gap * 2000, "J"),
+					new Beat(startTime + gap * 2080, "J"),
+					new Beat(startTime + gap * 2130, "Space"),
+					new Beat(startTime + gap * 2130, "D"),
+					new Beat(startTime + gap * 2171, "F"),
+					new Beat(startTime + gap * 2190, "D"),
+					new Beat(startTime + gap * 2220, "S"),//변환부분
+					new Beat(startTime + gap * 2220, "Space"),//변환부분
+					new Beat(startTime + gap * 2268, "S"),
+					new Beat(startTime + gap * 2316, "F"),
+					new Beat(startTime + gap * 2364, "S"),
+					new Beat(startTime + gap * 2412, "F"),
+					new Beat(startTime + gap * 2436, "J"),
+					new Beat(startTime + gap * 2460, "S"),
+					new Beat(startTime + gap * 2508, "F"),
+					new Beat(startTime + gap * 2556, "S"),
+					new Beat(startTime + gap * 2604, "F"),
+					new Beat(startTime + gap * 2628, "J"),
+					new Beat(startTime + gap * 2652, "S"),
+					new Beat(startTime + gap * 2700, "F"),//10
+					new Beat(startTime + gap * 2749, "S"),
+					new Beat(startTime + gap * 2798, "F"),
+					new Beat(startTime + gap * 2822, "J"),
+					new Beat(startTime + gap * 2846, "S"),
+					new Beat(startTime + gap * 2894, "F"),
+					new Beat(startTime + gap * 2942, "S"),
+					new Beat(startTime + gap * 2991, "F"),
+					new Beat(startTime + gap * 2991, "Space"),
+					new Beat(startTime + gap * 3015, "J"),
+					new Beat(startTime + gap * 3040, "S"),
+					new Beat(startTime + gap * 3088, "F"),
+					new Beat(startTime + gap * 3136, "S"),
+					new Beat(startTime + gap * 3184, "F"),//20
+					new Beat(startTime + gap * 3206, "J"),
+					new Beat(startTime + gap * 3232, "S"),
+					new Beat(startTime + gap * 3281, "F"),
+					new Beat(startTime + gap * 3329, "S"),
+					new Beat(startTime + gap * 3377, "F"),
+					new Beat(startTime + gap * 3401, "J"),
+					new Beat(startTime + gap * 3425, "S"),
+					new Beat(startTime + gap * 3473, "F"),
+					new Beat(startTime + gap * 3522, "S"),
+					new Beat(startTime + gap * 3570, "F"),
+					new Beat(startTime + gap * 3618, "S"),
+					new Beat(startTime + gap * 3642, "J"),
+					new Beat(startTime + gap * 3666, "S"),//30
+					new Beat(startTime + gap * 3714, "S"),
+					new Beat(startTime + gap * 3714, "Space"),
+					/*new Beat(startTime + gap * 3763, "F"),
+					new Beat(startTime + gap * 3812, "S"),
+					new Beat(startTime + gap * 3860, "F"),
+					new Beat(startTime + gap * 3908, "S"),
+					new Beat(startTime + gap * 3957, "F"),
+					new Beat(startTime + gap * 4005, "S"),
+					new Beat(startTime + gap * 4053, "F"),
+					new Beat(startTime + gap * 4101, "S"),
+					new Beat(startTime + gap * 4149, "F"),//40
+					new Beat(startTime + gap * 4198, "S"),
+					new Beat(startTime + gap * 4195, "F"),
+					new Beat(startTime + gap * 4242, "S"),
+					new Beat(startTime + gap * 4289, "F"),
+					new Beat(startTime + gap * 4336, "S"),
+					new Beat(startTime + gap * 4383, "F"),
+					new Beat(startTime + gap * 4430, "S"),
+					new Beat(startTime + gap * 4477, "F"),
+					new Beat(startTime + gap * 4524, "S"),
+					new Beat(startTime + gap * 4571, "F"),//50
+					new Beat(startTime + gap * 4618, "S"),
+					new Beat(startTime + gap * 4665, "F"),
+					new Beat(startTime + gap * 4712, "S"),
+					new Beat(startTime + gap * 4759, "F"),
+					new Beat(startTime + gap * 4806, "S"),
+					new Beat(startTime + gap * 4853, "F"),
+					new Beat(startTime + gap * 4900, "S"),
+					new Beat(startTime + gap * 4947, "F"),
+					new Beat(startTime + gap * 4994, "S"),
+					new Beat(startTime + gap * 5041, "S"),//60*/
 					
 			};
 		}
