@@ -65,6 +65,13 @@ public class BeatGame extends JFrame {
 	public static Game game;
 
 	public BeatGame() { // 생성자
+		trackList.add(new Track("Angel With A Shotgun Title Image.png", "Angel With A Shotgun Start Image.jpg",
+				"Angel With A Shotgun Game Image.jpg", "Angel With A Shotgun Selected.mp3",
+				"The Cab - Angel With A Shotgun.mp3", "The Cab - Angel With A Shotgun"));
+		trackList.add(new Track("Lilly Title Image.png", "Lilly Start Image.jpg",
+				"Lilly Game Image.jpg", "Lily Selected.mp3", "Alan Walker & K-391 & Emelie Hollow - Lily.mp3",
+				"Alan Walker & K-391 & Emelie Hollow - Lily"));
+		
 		setUndecorated(true);
 		setTitle("BeatGame");
 		setSize(Main.SCREEN_WIDTH, Main.SECREEN_HEIGHT);
@@ -78,13 +85,6 @@ public class BeatGame extends JFrame {
 		
 		addKeyListener(new KeyListener());
 
-		trackList.add(new Track("Angel With A Shotgun Title Image.png", "Angel With A Shotgun Start Image.jpg",
-				"Angel With A Shotgun Game Image.jpg", "Angel With A Shotgun Selected.mp3",
-				"The Cab - Angel With A Shotgun.mp3", "The Cab - Angel With A Shotgun"));
-		trackList.add(new Track("Lilly Title Image.png", "Lilly Start Image.jpg",
-				"Lilly Game Image.jpg", "Lily Selected.mp3", "Alan Walker & K-391 & Emelie Hollow -Lily.mp3",
-				"Alan Walker & K-391 & Emelie Hollow -Lily"));
-		
 		startButton.setBounds(287, 540, 293, 93); // x, y, width, height
 		startButton.setBorderPainted(false); // 가까이가면 테두리 생겨서 변하는 모습 제거
 		startButton.setContentAreaFilled(false);
@@ -337,6 +337,11 @@ public class BeatGame extends JFrame {
 			game.screenDraw(g);
 		}
 		paintComponents(g); // JLabel,JButton 등을 JFrame 안에 그려주는 역할
+		try {
+			Thread.sleep(5);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 		this.repaint();
 	}
 	
@@ -376,8 +381,9 @@ public class BeatGame extends JFrame {
 		backButton.setVisible(true);
 		background = new ImageIcon(Main.class.getResource("../images/" + trackList.get(nowSelected).getGameImage())).getImage();
 		isGameScreen = true;
-		setFocusable(true); // 키보드 포커스가 맞춰진다
 		game = new Game(trackList.get(nowSelected).getTitleName(), difficulty, trackList.get(nowSelected).getGameMusic());
+		game.start();
+		setFocusable(true); // 키보드 포커스가 맞춰진다
 	}
 	
 	public void backMain() {
