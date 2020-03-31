@@ -58,7 +58,13 @@ public class Game extends Thread{
 		
 		for(int i=0; i<noteList.size(); i++) {
 			Note note = noteList.get(i);
-			note.screenDraw(g);
+			if(!note.isProceeded()) {
+				noteList.remove(i);
+				i--;
+			}
+			else {
+				note.screenDraw(g);
+			}
 		}
 		
 		g.setColor(Color.white);
@@ -82,6 +88,7 @@ public class Game extends Thread{
 
 	
 	public void pressS() {
+		judge("S");
 		noteRouteSImage = new ImageIcon(Main.class.getResource("../images/noteRoutePressed.png")).getImage();
 		new Music("drumBig1.mp3", false).start();
 	}
@@ -91,6 +98,7 @@ public class Game extends Thread{
 	
 	
 	public void pressD() {
+		judge("D");
 		noteRouteDImage = new ImageIcon(Main.class.getResource("../images/noteRoutePressed.png")).getImage();
 		new Music("drumBig2.mp3", false).start();
 	}
@@ -100,6 +108,7 @@ public class Game extends Thread{
 	
 	
 	public void pressF() {
+		judge("F");
 		noteRouteFImage = new ImageIcon(Main.class.getResource("../images/noteRoutePressed.png")).getImage();
 		new Music("drumBig3.mp3", false).start();
 	}
@@ -109,6 +118,7 @@ public class Game extends Thread{
 	
 	
 	public void pressSpace() {
+		judge("Space");
 		noteRouteSpace1Image = new ImageIcon(Main.class.getResource("../images/noteRoutePressed.png")).getImage();
 		noteRouteSpace2Image = new ImageIcon(Main.class.getResource("../images/noteRoutePressed.png")).getImage();
 		new Music("drumBigSpace.mp3", false).start();
@@ -120,6 +130,7 @@ public class Game extends Thread{
 	
 	
 	public void pressJ() {
+		judge("J");
 		noteRouteJImage = new ImageIcon(Main.class.getResource("../images/noteRoutePressed.png")).getImage();
 		new Music("drumSmall1.mp3", false).start();
 	}
@@ -129,6 +140,7 @@ public class Game extends Thread{
 	
 	
 	public void pressK() {
+		judge("K");
 		noteRouteKImage = new ImageIcon(Main.class.getResource("../images/noteRoutePressed.png")).getImage();
 		new Music("drumSmall2.mp3", false).start();
 	}
@@ -138,6 +150,7 @@ public class Game extends Thread{
 	
 	
 	public void pressL() {
+		judge("L");
 		noteRouteLImage = new ImageIcon(Main.class.getResource("../images/noteRoutePressed.png")).getImage();
 		new Music("drumSmall3.mp3", false).start();
 	}
@@ -158,7 +171,7 @@ public class Game extends Thread{
 	
 	public void dropNotes() {
 		Beat[] beats = null;
-		if(titleName.equals("The Cab - Angel With A Shotgun")) {
+		if(titleName.equals("The Cab - Angel With A Shotgun") && difficulty.equals("Easy")) {
 			int startTime = 580 - Main.REACH_TIME * 500;
 			int gap = 10;
 			beats = new Beat[] {
@@ -266,7 +279,21 @@ public class Game extends Thread{
 					
 			};
 		}
-		else if(titleName.contentEquals("Alan Walker & K-391 & Emelie Hollow - Lily")) {
+		else if(titleName.equals("The Cab - Angel With A Shotgun") && difficulty.equals("Hard")) {
+			int startTime = 1000;
+			beats = new Beat[] {
+					new Beat(startTime, "S"),
+					
+			};
+		}
+		else if(titleName.equals("Alan Walker & K-391 & Emelie Hollow - Lily") && difficulty.equals("Easy")) {
+			int startTime = 1000;
+			beats = new Beat[] {
+					new Beat(startTime, "S"),
+					
+			};
+		}
+		else if(titleName.equals("Alan Walker & K-391 & Emelie Hollow - Lily") && difficulty.equals("Hard")) {
 			int startTime = 1000;
 			beats = new Beat[] {
 					new Beat(startTime, "S"),
@@ -290,6 +317,16 @@ public class Game extends Thread{
 				} catch(Exception e) {
 					e.printStackTrace();
 				}
+			}
+		}
+	}
+	
+	public void judge(String input) {
+		for(int i=0; i < noteList.size(); i++) {
+			Note note =  noteList.get(i);
+			if(input.equals(note.getNoteType())) {
+				note.judge();
+				break;
 			}
 		}
 	}
